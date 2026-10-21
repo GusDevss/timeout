@@ -3,8 +3,7 @@
 // Requiere un hosting con PHP y la función mail() habilitada (cPanel, Hostinger, GoDaddy...).
 
 // --- Configuración -------------------------------------------------------
-$DESTINATARIOS = ['marketing@timeouteducation.com', 'claudia@timeouteducation.com'];
-$COPIA_OCULTA  = ['mudi.estrategias@gmail.com', 'gustavo.s@devss.com.mx'];
+$DESTINATARIOS = ['gustavo.s@devss.com.mx', 'thousandemotions.lua@gmail.com'];
 // Debe ser una cuenta del mismo dominio donde se publica la página; si no, el correo suele caer en spam.
 $REMITENTE     = 'no-reply@timeouteducation.com';
 $NOMBRE_REMITENTE = 'Landing High School';
@@ -80,7 +79,6 @@ $cabeceras = [
     'Content-Type: text/html; charset=UTF-8',
     'From: ' . $codificar($NOMBRE_REMITENTE) . " <$REMITENTE>",
     'Reply-To: ' . $codificar("$nombre $apellido") . " <$email>",
-    'Bcc: ' . implode(', ', $COPIA_OCULTA),
     'X-Mailer: PHP/' . phpversion(),
 ];
 
