@@ -1,14 +1,13 @@
 <?php
-// Recibe el formulario de contacto de la landing y lo envía por correo.
-// Requiere un hosting con PHP y la función mail() habilitada (cPanel, Hostinger, GoDaddy...).
+// Recibe el formulario de contacto de la landing y lo envía por correo mediante SMTP (PHPMailer).
+// Los destinatarios, el remitente y los datos del servidor de correo están en config-correo.php.
 
-// --- Configuración -------------------------------------------------------
-$DESTINATARIOS = ['gustavo.s@devss.com.mx', 'thousandemotions.lua@gmail.com'];
-// Debe ser una cuenta del mismo dominio donde se publica la página; si no, el correo suele caer en spam.
-$REMITENTE     = 'no-reply@timeouteducation.com';
-$NOMBRE_REMITENTE = 'Landing High School';
-$ASUNTO        = 'Nueva solicitud: High School en el extranjero';
-// -------------------------------------------------------------------------
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as MailerException;
+
+require __DIR__ . '/lib/PHPMailer/Exception.php';
+require __DIR__ . '/lib/PHPMailer/PHPMailer.php';
+require __DIR__ . '/lib/PHPMailer/SMTP.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -73,24 +72,54 @@ if ($mensaje !== '') {
 }
 $html .= '<p style="margin-top:24px;color:#47566e;font-size:13px">Responde a este correo para contestarle directamente a ' . $e($nombre) . '.</p></div>';
 
-$codificar = fn(string $t): string => '=?UTF-8?B?' . base64_encode($t) . '?=';
-$cabeceras = [
-    'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=UTF-8',
-    'From: ' . $codificar($NOMBRE_REMITENTE) . " <$REMITENTE>",
-    'Reply-To: ' . $codificar("$nombre $apellido") . " <$email>",
-    'X-Mailer: PHP/' . phpversion(),
-];
+$texto = "Nueva solicitud desde la landing de High School\n\n";
+foreach ($filas as $etiqueta => $valor) {
+    $texto .= "$etiqueta: $valor\n";
+}
+if ($mensaje !== '') {
+    $texto .= "\nMensaje:\n$mensaje\n";
+}
 
-$enviado = mail(
-    implode(', ', $DESTINATARIOS),
-    $codificar($ASUNTO),
-    $html,
-    implode("\r\n", $cabeceras),
-    '-f' . $REMITENTE
-);
+$archivoConfig = __DIR__ . '/config-correo.php';
+if (!is_file($archivoConfig)) {
+    error_log('enviar.php: falta config-correo.php');
+    responder(500, ['ok' => false, 'error' => 'El envío de correos no está configurado.']);
+}
+$config = require $archivoConfig;
 
-if (!$enviado) {
+$correo = new PHPMailer(true);
+try {
+    $correo->isSMTP();
+    $correo->Host       = $config['smtp_host'];
+    $correo->Port       = (int)$config['smtp_puerto'];
+    if ($config['smtp_cifrado'] === 'ssl') {
+        $correo->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    } elseif ($config['smtp_cifrado'] === 'tls') {
+        $correo->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    } else {
+        $correo->SMTPAutoTLS = false;
+    }
+    $correo->SMTPAuth   = true;
+    $correo->Username   = $config['smtp_usuario'];
+    $correo->Password   = $config['smtp_password'];
+    $correo->CharSet    = PHPMailer::CHARSET_UTF8;
+    $correo->Timeout    = 20;
+
+    $correo->setFrom($config['remitente'], $config['nombre_remitente']);
+    foreach ($config['destinatarios'] as $destinatario) {
+        $correo->addAddress($destinatario);
+    }
+    $correo->addReplyTo($email, "$nombre $apellido");
+
+    $correo->isHTML(true);
+    $correo->Subject = $config['asunto'];
+    $correo->Body    = $html;
+    $correo->AltBody = $texto;
+
+    $correo->send();
+} catch (MailerException $ex) {
+    error_log('enviar.php: ' . $correo->ErrorInfo);
     responder(500, ['ok' => false, 'error' => 'No se pudo enviar el correo.']);
 }
+
 responder(200, ['ok' => true]);
