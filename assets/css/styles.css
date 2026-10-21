@@ -286,6 +286,7 @@ address { font-style: normal; }
 .field [aria-invalid="true"] { border-color: #b4232c; }
 .field-error { color: #b4232c; font-size: .875rem; font-weight: 600; }
 .field textarea::placeholder { color: #7a8799; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .form-footer { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: .5rem; }
 .form-status { font-weight: 600; }
 .form-status.is-ok { color: #17663a; }

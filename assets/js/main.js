@@ -1,6 +1,6 @@
-// Configura aquí el servicio que recibirá el formulario (Formspree, Getform, un endpoint propio...).
-// Mientras esté vacío, el formulario abre el correo del usuario con los datos ya escritos.
-const FORM_ENDPOINT = "";
+// Script que recibe el formulario y lo envía por correo (destinatarios y copia oculta se configuran en enviar.php).
+// Si se deja vacío, el formulario abre el correo del usuario con los datos ya escritos.
+const FORM_ENDPOINT = "enviar.php";
 const FORM_FALLBACK_EMAIL = "marketing@timeouteducation.com";
 
 document.documentElement.classList.add("js");
@@ -124,7 +124,8 @@ if (form) {
     setStatus("", "");
     try {
       const res = await fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } });
-      if (!res.ok) throw new Error(String(res.status));
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.ok) throw new Error(json.error || String(res.status));
       form.reset();
       setStatus("Recibimos tus datos. Te contactaremos pronto para agendar la llamada.", "ok");
     } catch {
