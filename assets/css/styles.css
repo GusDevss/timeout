@@ -121,7 +121,8 @@ address { font-style: normal; }
 .hero-lead { margin-top: 1.5rem; max-width: 34em; font-size: var(--step-1); line-height: 1.55; color: var(--muted); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
 .hero-awards { display: flex; align-items: center; gap: .875rem; margin-top: 2.25rem; padding-top: 1.5rem; border-top: 1px solid var(--line); max-width: 36rem; }
-.hero-awards img { height: 64px; width: auto; }
+.hero-awards img { height: 76px; width: auto; flex: none; }
+.hero-awards strong { color: var(--navy); font-weight: 700; }
 .hero-awards p { font-size: var(--step--1); line-height: 1.45; color: var(--muted); }
 
 /* Globo en cuadrantes (eco del logo) */
@@ -219,8 +220,8 @@ address { font-style: normal; }
 .why-head { display: flex; justify-content: space-between; align-items: center; gap: 2rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 .why-sub { margin-top: .75rem; font-family: var(--font-script); font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem); color: var(--yellow); }
 .why-awards-text { margin-top: 1rem; color: #c9d4e4; font-weight: 600; }
-.why-awards { display: flex; gap: 1rem; flex: none; }
-.why-awards img { height: clamp(96px, 11vw, 140px); width: auto; background: var(--white); border-radius: 50%; padding: 10px; aspect-ratio: 1; object-fit: contain; }
+.why-awards { display: flex; gap: clamp(.75rem, 2vw, 1.5rem); flex: none; padding: clamp(.875rem, 2vw, 1.25rem) clamp(1rem, 2.5vw, 1.75rem); background: var(--white); border-radius: var(--radius); }
+.why-awards img { height: clamp(96px, 11vw, 140px); width: auto; }
 .why-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
 .why-list li { border-top: 1px solid rgba(255, 255, 255, .28); padding-top: 1.5rem; }
 .why-list h3 { color: var(--white); }
@@ -297,7 +298,7 @@ address { font-style: normal; }
 .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
 .footer-brand { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
 .footer-logo { background: var(--white); border-radius: 12px; padding: 10px 14px; }
-.footer-logo img { height: 64px; width: auto; }
+.footer-logo img { height: 72px; width: auto; }
 .motto { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-weight: 700; font-variation-settings: "wdth" 80; font-size: 1.125rem; color: var(--white); }
 .motto li { display: flex; align-items: center; gap: .5rem; }
 .motto li::before { content: ""; width: 10px; height: 10px; border-radius: 0 100% 0 0; }
