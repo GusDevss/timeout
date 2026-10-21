@@ -105,7 +105,8 @@ try {
     $correo->CharSet    = PHPMailer::CHARSET_UTF8;
     $correo->Timeout    = 20;
 
-    $correo->setFrom($config['remitente'], $config['nombre_remitente']);
+    // Casi todos los servidores solo permiten enviar como la cuenta con la que se inicia sesión.
+    $correo->setFrom($config['remitente'] ?: $config['smtp_usuario'], $config['nombre_remitente']);
     foreach ($config['destinatarios'] as $destinatario) {
         $correo->addAddress($destinatario);
     }

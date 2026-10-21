@@ -7,7 +7,8 @@ return [
     'destinatarios' => ['gustavo.s@devss.com.mx', 'thousandemotions.lua@gmail.com'],
 
     // Cuenta que envía los correos
-    'remitente'        => 'marketing@timeouteducation.com',
+    // Déjalo vacío para enviar como la cuenta de smtp_usuario (lo recomendado).
+    'remitente'        => '',
     'nombre_remitente' => 'Timeout Education',
     'asunto'           => 'Nueva solicitud: High School en el extranjero',
 
@@ -20,6 +21,6 @@ return [
     'smtp_host'     => 'smtp.gmail.com',
     'smtp_puerto'   => 587,
     'smtp_cifrado'  => 'tls',            // 'tls' para el puerto 587, 'ssl' para el 465
-    'smtp_usuario'  => 'marketing@timeouteducation.com',
+    'smtp_usuario'  => '',
     'smtp_password' => '',
 ];
