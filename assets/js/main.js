@@ -114,8 +114,8 @@ if (form) {
         "",
         data.get("mensaje") || "",
       ].join("\n");
-      window.location.href = `mailto:${FORM_FALLBACK_EMAIL}?subject=${encodeURIComponent("Asesoría high school en el extranjero")}&body=${encodeURIComponent(body)}`;
-      setStatus("Abrimos tu correo con la solicitud lista para enviar.", "ok");
+      window.location.href = `mailto:${FORM_FALLBACK_EMAIL}?subject=${encodeURIComponent("Información high school en el extranjero")}&body=${encodeURIComponent(body)}`;
+      setStatus("Abrimos tu correo con tus datos listos para enviar.", "ok");
       return;
     }
 
@@ -126,12 +126,12 @@ if (form) {
       const res = await fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } });
       if (!res.ok) throw new Error(String(res.status));
       form.reset();
-      setStatus("Solicitud enviada. Te contactaremos pronto para agendar tu asesoría.", "ok");
+      setStatus("Recibimos tus datos. Te contactaremos pronto para agendar la llamada.", "ok");
     } catch {
       setStatus(`No se pudo enviar. Escríbenos a ${FORM_FALLBACK_EMAIL} o por WhatsApp.`, "error");
     } finally {
       submit.disabled = false;
-      submit.textContent = "Enviar solicitud";
+      submit.textContent = "Quiero más información";
     }
   });
 }
